@@ -9,7 +9,7 @@ import './i18n';
 
 const App: React.FC = () => {
   const { t, i18n } = useTranslation();
-  const { contacts, groups, addContacts, removeContact, moveContact, createGroup, deleteGroup } = useApp();
+  const { contacts, groups, addContacts, removeContact, moveContact, createGroup, deleteGroup, loadDummyData } = useApp();
   const [searchTerm, setSearchTerm] = useState('');
   const [showAddGroup, setShowAddGroup] = useState(false);
   const [newGroupName, setNewGroupName] = useState('');
@@ -35,9 +35,18 @@ const App: React.FC = () => {
       <header style={{ paddingBottom: '20px', borderBottom: '1px solid var(--border)', marginBottom: '20px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <h1>{t('common.appName')}</h1>
-          <button onClick={toggleLanguage} className="btn" style={{ padding: '8px', borderRadius: '50%', background: 'var(--secondary-light)', color: 'var(--primary)' }}>
-            <Globe size={20} />
-          </button>
+          <div style={{ display: 'flex', gap: '8px' }}>
+            <button 
+              onClick={loadDummyData}
+              className="btn"
+              style={{ fontSize: '0.7rem', padding: '4px 8px', background: '#eee' }}
+            >
+              Dummy Data
+            </button>
+            <button onClick={toggleLanguage} className="btn" style={{ padding: '8px', borderRadius: '50%', background: 'var(--secondary-light)', color: 'var(--primary)' }}>
+              <Globe size={20} />
+            </button>
+          </div>
         </div>
         <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>{t('home.subtitle')}</p>
       </header>

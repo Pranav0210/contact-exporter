@@ -14,6 +14,7 @@ interface AppContextType {
   createGroup: (name: string) => void;
   deleteGroup: (id: string) => void;
   moveContact: (contactId: string, groupId: string) => void;
+  loadDummyData: () => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -63,8 +64,25 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setContacts(prev => prev.map(c => c.id === contactId ? { ...c, groupId } : c));
   };
 
+  const loadDummyData = () => {
+    const dummyGroups = [
+      { id: 'group-1', name: "Groom's Side" },
+      { id: 'group-2', name: "Bride's Side" },
+      { id: 'group-3', name: "Colleagues" }
+    ];
+    const dummyContacts = [
+      { id: 'c1', name: 'John Doe', tel: ['+91 98765 43210'], groupId: 'group-1' },
+      { id: 'c2', name: 'Jane Smith', tel: ['+91 98765 43211'], groupId: 'group-2' },
+      { id: 'c3', name: 'Robert Wilson', tel: ['+91 98765 43212'], groupId: 'group-3' },
+      { id: 'c4', name: 'Michael Brown', tel: ['+91 98765 43213'], groupId: 'group-1' },
+      { id: 'c5', name: 'Sarah Miller', tel: ['+91 98765 43214'], groupId: 'group-2' }
+    ];
+    setGroups([{ id: 'unassigned', name: 'Unassigned' }, ...dummyGroups]);
+    setContacts(dummyContacts);
+  };
+
   return (
-    <AppContext.Provider value={{ contacts, groups, addContacts, removeContact, createGroup, deleteGroup, moveContact }}>
+    <AppContext.Provider value={{ contacts, groups, addContacts, removeContact, createGroup, deleteGroup, moveContact, loadDummyData }}>
       {children}
     </AppContext.Provider>
   );
