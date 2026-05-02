@@ -13,6 +13,7 @@ const App: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [showAddGroup, setShowAddGroup] = useState(false);
   const [newGroupName, setNewGroupName] = useState('');
+  const [isExporting, setIsExporting] = useState(false);
 
   const handleSelectContacts = async () => {
     const selected = await ContactService.selectContacts();
@@ -25,12 +26,51 @@ const App: React.FC = () => {
     i18n.changeLanguage(i18n.language === 'en' ? 'hi' : 'en');
   };
 
-  const handleExport = () => {
-    PdfExportService.exportToPdf(contacts, groups, t('common.appName'));
+  const handleExport = async () => {
+    setIsExporting(true);
+    await PdfExportService.exportToPdf('print-view', 'wedding-invite-list.pdf');
+    setIsExporting(false);
   };
 
   return (
     <div className="container" style={{ paddingBottom: '100px' }}>
+      {/* Hidden Print View for PDF generation */}
+      <div id="print-view" style={{ display: 'none', padding: '40px', background: 'white', color: 'black' }}>
+        <div style={{ textAlign: 'center', marginBottom: '40px', borderBottom: '2px solid #800000', paddingBottom: '20px' }}>
+          <h1 style={{ fontSize: '32px', marginBottom: '10px' }}>{t('common.appName')}</h1>
+          <p style={{ fontSize: '16px', color: '#666' }}>{new Date().toLocaleDateString()}</p>
+        </div>
+        
+        {groups.map(group => {
+          const groupContacts = contacts.filter(c => c.groupId === group.id);
+          if (groupContacts.length === 0) return null;
+          
+          return (
+            <div key={group.id} style={{ marginBottom: '30px' }}>
+              <h2 style={{ fontSize: '20px', borderBottom: '1px solid #d4af37', paddingBottom: '5px', marginBottom: '15px' }}>
+                {group.id === 'unassigned' ? t('groups.unassigned') : group.name}
+              </h2>
+              <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                <thead>
+                  <tr style={{ background: '#f9f9f9' }}>
+                    <th style={{ textAlign: 'left', padding: '10px', border: '1px solid #eee' }}>Name</th>
+                    <th style={{ textAlign: 'left', padding: '10px', border: '1px solid #eee' }}>Phone</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {groupContacts.map(contact => (
+                    <tr key={contact.id}>
+                      <td style={{ padding: '10px', border: '1px solid #eee' }}>{contact.name}</td>
+                      <td style={{ padding: '10px', border: '1px solid #eee' }}>{contact.tel[0]}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          );
+        })}
+      </div>
+
       {/* Header */}
       <header style={{ paddingBottom: '20px', borderBottom: '1px solid var(--border)', marginBottom: '20px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -146,13 +186,14 @@ const App: React.FC = () => {
       {/* Export Button (Sticky) */}
       <div className="sticky-footer glass">
         <button 
+          disabled={isExporting}
           onClick={handleExport}
           className="btn btn-primary" 
-          style={{ width: '100%', gap: '12px' }} 
+          style={{ width: '100%', gap: '12px', opacity: isExporting ? 0.7 : 1 }} 
           id="tour-export-pdf"
         >
           <FileDown size={24} />
-          {t('common.export')}
+          {isExporting ? t('export.preparing') : t('common.export')}
         </button>
       </div>
 
