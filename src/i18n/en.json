@@ -1,0 +1,42 @@
+{
+  "common": {
+    "appName": "Wedding Invite Manager",
+    "loading": "Loading...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "export": "Export PDF",
+    "add": "Add",
+    "search": "Search contacts..."
+  },
+  "home": {
+    "welcome": "Welcome to the Wedding Invite Manager",
+    "subtitle": "Easily manage and export your guest list",
+    "getStarted": "Get Started",
+    "selectContacts": "Select Contacts from Phone",
+    "manualEntry": "Add Manually",
+    "noContacts": "No contacts selected yet."
+  },
+  "groups": {
+    "title": "Groups",
+    "createGroup": "Create New Group",
+    "groupName": "Group Name (e.g. Groom's Family)",
+    "unassigned": "Unassigned",
+    "moveTo": "Move to group"
+  },
+  "export": {
+    "preparing": "Preparing your PDF...",
+    "success": "PDF Exported Successfully!",
+    "error": "Error exporting PDF"
+  },
+  "tour": {
+    "next": "Next",
+    "prev": "Previous",
+    "done": "Finish",
+    "skip": "Skip",
+    "step1": "Select contacts from your phone's address book.",
+    "step2": "Create groups to organize your guests.",
+    "step3": "Drag or move contacts into groups.",
+    "step4": "Export everything as a professional PDF."
+  }
+}
